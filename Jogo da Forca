@@ -1,0 +1,109 @@
+import java.util.Scanner;
+
+public class App {
+        public static void main (String[] args) {
+            Scanner teclado = new Scanner (System.in);
+
+            //palavra secreta
+            String palavra = "pipoca"; 
+            //variáveis para armazenar as letras que o jogador acertou e tentou
+            String letrasCertas = "";
+            String letrasTentadas = "";
+
+            //Números de vidas do jogador (6 tentativas) 
+            int vidasRestantes = 6;
+
+            //Variável para armazenar a letra digitada pelo jogador
+            char letrasChutadas;
+
+            //Loop principal do jogo
+            while (vidasRestantes > 0) {
+                //exibe o estado atual da forca e as letras descobertas
+                exibeForca(vidasRestantes);
+                exibePalavraTela(palavra, letrasCertas);
+
+                System.out.println("Letras já tentadas: " + letrasTentadas);
+
+                //Solicita ao jogador para digitar uma letra
+                System.out.println("Digite uma letra: ");
+                letrasChutadas = teclado.nextLine().toLowerCase().charAt(0);
+                //.toLowerCase() transforma as letras recebidas em minusculas
+                //.charAt(); pega somente a primeira letras independente se o usúario digitar uma letra, palavra ou frase.
+
+                //Verifica se a letra já foi usada
+                if (letrasTentadas.contains(String.valueOf(letrasChutadas))) {
+                    //String.valueOf() é um método da classe String que converte o argumento para passar para uma representação em string: char > String
+                    System.out.println("Ops, cê já tentou essa letra ein... Tenta outra ai");
+                    continue;
+                }
+                letrasTentadas += letrasChutadas;
+
+                //Verifica se a letra está na palavra
+                if (palavra.contains(String.valueOf(letrasChutadas))) {
+                    letrasCertas += letrasChutadas;
+                    } else {
+                        vidasRestantes--;
+                    }
+                    //Verifica se o jogador ganhou
+                    if (palavraDescoberta(palavra, letrasCertas)){
+                        exibeForca(vidasRestantes);
+                        exibePalavraTela(palavra, letrasCertas);
+                        System.out.println("Parabénss, cê ganhou!");
+                        break;
+                    }
+            }
+            //Verifica se o jogador perdeu
+            if (vidasRestantes == 0){
+                exibeForca(vidasRestantes);
+                System.out.println("Perdeu, perdeu, perdeuu! A paravra certa era: " + palavra);
+            }
+            teclado.close();;
+        }
+        //Função para exibir a palvra com as letras descobertas
+        static void exibePalavraTela (String palavra, String letrasCertas) {
+            for (int i =- 0; i < palavra.length(); i++) {
+                char letra = palavra.charAt(i);
+                if (letrasCertas.contains(String.valueOf(letra))) {
+                    System.out.println(letra + "");
+                } else {
+                    System.out.println("_ ");
+                }
+            }
+            System.out.println();
+        }
+        //Função para exibir o desenho da forca
+        static void exibeForca(int vidasRestantes) {
+            switch (vidasRestantes) {
+                case 6:
+                System.out.println("+---+\n|   |\n    |\n    |\n    |\n    |\n=========");
+                break;
+            case 5: 
+                System.out.println("+---+\n|   |\nO   |\n    |\n    |\n    |\n=========");
+                break;
+            case 4: 
+                System.out.println("+---+\n|   |\nO   |\n|   |\n    |\n    |\n=========");
+                break;
+            case 3: 
+                System.out.println("+---+\n|   |\nO   |\n|\\  |\n    |\n    |\n=========");
+                break;
+            case 2: 
+                System.out.println("+---+\n|   |\nO   |\n|\\  |\n/   |\n    |\n=========");
+                break;
+            case 1: 
+                System.out.println("+---+\n|   |\nO   |\n|\\  |\n/ \\ |\n    |\n=========");
+                break;
+            case 0: 
+                System.out.println("+---+\n|   |\nO   |\n|\\  |\n/ \\ |\n    |\n=========");
+                break;
+            }
+        }
+        //Função para verificar se a palavra foi toda descoberta
+        static boolean palavraDescoberta (String palavra, String letrasCertas) {
+            for (int i = 0; i < palavra.length(); i++){
+                if (!letrasCertas.contains(String.valueOf(palavra.charAt(i)))) {
+                    return false;
+                }
+            }
+            return true;
+        } 
+    }
